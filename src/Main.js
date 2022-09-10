@@ -38,8 +38,8 @@ const Main = () => {
    
       
       <div className=" flex justify-center ">
-      <div className="lg:w-[400px] w-full ">
-        <div className=" bg-gray-200 h-[50px] text-center pt-2 mb-6">
+      <div className="lg:w-[400px] w-full h-[100vh] ">
+        <div className=" bg-gray-200 h-[10vh] text-center pt-2 mb-6">
           Teckrab's socket chat
         </div>
         <BrowserRouter>

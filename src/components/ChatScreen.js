@@ -76,19 +76,20 @@ const ChatScreen = ({ socket }) => {
     setMsg("");
     setFile(null);
     document.getElementById("file_input").value = "";
+    myRef.current.scrollIntoView()
     
   };
 
 
   const myRef = useRef()
 
-  useEffect(() => {
-    myRef.current.scrollIntoView()
-  }, [msgs])
+    // useEffect(() => {
+    //   myRef.current.scrollIntoView()
+    // }, [msgs])
   
   return (
-    <div className=" h-[700px] ">
-      <div className=" h-[70%] ">
+    <div className=" h-[80vh] ">
+      <div className=" h-[90%] ">
         <div className=" text-black  text-center flex justify-center ">
           <div className=" w-[40px] text-[12px] rounded-md bg-teal-600 text-white mb-5 ">
             chat
@@ -102,11 +103,11 @@ const ChatScreen = ({ socket }) => {
             </div>
           ))}
 
-            <div id='scroll_to_position' ref={myRef} className='mt-10'  ></div>
+            <div id='scroll_to_position' ref={myRef} className=''  ></div>
         </div>
       </div>
 
-      <div>
+      <div className='h-[10%]' >
         {file && (
           <Slide direction="up" in={true} mountOnEnter unmountOnExit>
             <div>
