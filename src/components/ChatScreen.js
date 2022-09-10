@@ -125,7 +125,7 @@ const ChatScreen = ({ socket }) => {
                 </div>
               </div>
               <div className=" flex items-center justify-center bg-gray-200 py-2 space-x-4 mb-1 ">
-                {file.type.substr(0,4) === "image" ? (
+                {file.type.substr(0,5) === "image" ? (
                   <div>
                     {" "}
                     <img
