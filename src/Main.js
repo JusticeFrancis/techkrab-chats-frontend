@@ -38,7 +38,7 @@ const Main = () => {
    
       
       <div className=" flex justify-center ">
-      <div className="lg:w-[400px] px-3 lg:px-0 ">
+      <div className="lg:w-[400px] w-full px-3 lg:px-0 ">
         <div className=" bg-gray-200 h-[50px] text-center pt-2 mb-6">
           Teckrab's socket chat
         </div>
