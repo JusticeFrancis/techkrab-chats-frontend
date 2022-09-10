@@ -15,16 +15,7 @@ const ChatScreen = ({ socket }) => {
   const { user, guest } = useParams();
   const [file, setFile] = useState(null);
   const [msgs, setMsgs] = useState([
-    {
-      type: Message.User,
-      msg: "How are you doing bro and when would we see",
-      has_file: false,
-    },
-    {
-      type: Message.Guest,
-      msg: "How are you doing bro and when would we see",
-      has_file: false,
-    },
+   
   ]);
 
   useEffect(() => {
