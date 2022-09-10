@@ -89,7 +89,7 @@ const ChatScreen = ({ socket }) => {
   
   return (
     <div className=" h-[80vh] ">
-      <div className=" h-[80%] ">
+      <div className=" h-[90%] ">
         <div className=" text-black  text-center flex justify-center ">
           <div className=" w-[40px] text-[12px] rounded-md bg-teal-600 text-white mb-5 ">
             chat
