@@ -5,7 +5,7 @@ export const User = ({ data }) => (
     <div className=" w-3/5  space-x-2 bg-[#075e54] text-white rounded-tl-lg  rounded-b-lg py-1 px-2 ">
       {data.has_file && (
         <div>
-          {data.file.type === "image/png" ? (
+          {data.file.type.substr(0,4) === "image" ? (
             <div>
               <img
                 src={URL.createObjectURL(data.file)}
@@ -46,7 +46,7 @@ export const Guest = ({ data }) => (
     <div className=" w-3/5  space-x-2  bg-[#435a64] text-white rounded-tr-lg  rounded-b-lg py-1 px-2 ">
       {data.has_file && (
         <div>
-          {data.file_extension === "image/png" ? (
+          {data.file_extension.substr(0,4) === "image" ? (
             <div>
               <img
                 src={"https://techkrab-socket-backend-production.up.railway.app/tmp/" + data.filename}
