@@ -3,6 +3,9 @@ import {
   Close,
   FileDownload,
   Folder,
+  Mic,
+  MicOff,
+  RecordVoiceOver,
   Send,
 } from "@mui/icons-material";
 import { Avatar, Fade, InputBase, Slide } from "@mui/material";
@@ -14,14 +17,15 @@ const ChatScreen = ({ socket }) => {
   const [msg, setMsg] = useState("");
   const { user, guest } = useParams();
   const [file, setFile] = useState(null);
-  const [msgs, setMsgs] = useState([
-   
-  ]);
+  const [msgs, setMsgs] = useState([]);
 
   useEffect(() => {
     if (socket) {
       socket.on("new_message", (data) => {
-        if (user === data.room_id[0] && guest === data.room_id[1] || guest === data.room_id[0] && user === data.room_id[1]) {
+        if (
+          (user === data.room_id[0] && guest === data.room_id[1]) ||
+          (guest === data.room_id[0] && user === data.room_id[1])
+        ) {
           let new_message = {
             type: Message.Guest,
             msg: data.message,
@@ -76,17 +80,46 @@ const ChatScreen = ({ socket }) => {
     setMsg("");
     setFile(null);
     document.getElementById("file_input").value = "";
-    myRef.current.scrollIntoView()
-    
+    myRef.current.scrollIntoView();
   };
 
+  const myRef = useRef();
 
-  const myRef = useRef()
+  // useEffect(() => {
+  //   myRef.current.scrollIntoView()
+  // }, [msgs])
 
-    // useEffect(() => {
-    //   myRef.current.scrollIntoView()
-    // }, [msgs])
-  
+  const [blob, setBlob] = useState("");
+  const [isrecording, setRecording] = useState(false);
+  const [recorder_, setRecorder] = useState(null);
+
+  const recordAudio = () => {
+    var device = navigator.mediaDevices.getUserMedia({ audio: true });
+
+    var items = [];
+    device.then((stream) => {
+      let recorder = new MediaRecorder(stream);
+      setRecorder(recorder);
+      recorder.ondataavailable = (e) => {
+        items.push(e.data);
+        console.log(e.data);
+        if (recorder.state == "inactive") {
+          var blob = new Blob(items, { type: "audio/webm;codecs=opus" });
+          setBlob(URL.createObjectURL(blob));
+          console.log(URL.createObjectURL(blob).toString());
+          const myFile = new File([blob], "audio.webm", {
+            type: blob.type,
+          });
+
+          console.log(myFile);
+          setFile(myFile);
+        }
+      };
+
+      recorder.start(100);
+    });
+  };
+
   return (
     <div className=" h-[80vh] ">
       <div className=" h-[90%] ">
@@ -103,11 +136,11 @@ const ChatScreen = ({ socket }) => {
             </div>
           ))}
 
-            <div id='scroll_to_position' ref={myRef} className=''  ></div>
+          <div id="scroll_to_position" ref={myRef} className=""></div>
         </div>
       </div>
 
-      <div className='h-[10%]' >
+      <div className="h-[10%]">
         {file && (
           <Slide direction="up" in={true} mountOnEnter unmountOnExit>
             <div>
@@ -125,7 +158,8 @@ const ChatScreen = ({ socket }) => {
                 </div>
               </div>
               <div className=" flex items-center justify-center bg-gray-200 py-2 space-x-4 mb-1 ">
-                {file.type.substr(0,5) === "image" ? (
+
+                {file.type.substr(0, 5) === "image" ? (
                   <div>
                     {" "}
                     <img
@@ -134,7 +168,13 @@ const ChatScreen = ({ socket }) => {
                     />{" "}
                   </div>
                 ) : (
-                  <Folder sx={{ fontSize: "35px", color: "black" }} />
+                  <>
+                    {file.type ===  "audio/webm;codecs=opus" ? (
+                      <audio src={URL.createObjectURL(file)} controls ></audio>
+                    ) : (
+                      <Folder sx={{ fontSize: "35px", color: "black" }} />
+                    )}
+                  </>
                 )}
 
                 <div>
@@ -160,6 +200,7 @@ const ChatScreen = ({ socket }) => {
                 document.getElementById("file_input").click();
               }}
             />
+
             <input
               type="file"
               id="file_input"
@@ -169,6 +210,26 @@ const ChatScreen = ({ socket }) => {
                 setFile(e.target.files[0]);
               }}
             />
+          </div>
+
+          <div>
+            {isrecording ? (
+              <MicOff
+                sx={{ fontSize: "30px", color: "purple", cursor: "pointer" }}
+                onClick={() => {
+                  setRecording(false);
+                  recorder_.stop();
+                }}
+              />
+            ) : (
+              <Mic
+                sx={{ fontSize: "30px", color: "purple", cursor: "pointer" }}
+                onClick={() => {
+                  setRecording(true);
+                  recordAudio();
+                }}
+              />
+            )}
           </div>
 
           <div className=" w-[80%]">
